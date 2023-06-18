@@ -232,7 +232,7 @@ public class SceneController : MonoBehaviour {
 
 	public void Xibalboys() // Abre la Web del Equipo
 	{
-		Application.OpenURL("https://xibalboys.itch.io");
+		Application.OpenURL("https://halfsunkgames.itch.io");
 	}
 
 	// Métodos privados
