@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     [Header("GameObjects")]
 	public GameObject mesh;        // Bicho en 3D
 	public GameObject deadSprite;  // Bicho aplastado en 2D
+	public GameObject particle;   
 
     [Header("UnityEvents")]
     public UnityEvent gameOver;           // Invoca comandos relacionados con la muerte del jugador
@@ -22,7 +23,9 @@ public class PlayerController : MonoBehaviour {
 	public UnityEvent continueTutorial;
 
 	[Header("Referencias")]
-	public FingerEvent fingerEvent;		// Referencia al script de los dedos para poder bajar la velocidad
+	public FingerEvent fingerEvent;     // Referencia al script de los dedos para poder bajar la velocidad
+	public DetectDeathKey dK;
+	public int lastPosition;
 
     // Propiedades privadas
     private Animator anim;   // Animador del personaje
@@ -65,6 +68,8 @@ public class PlayerController : MonoBehaviour {
     {
         mesh.SetActive(false);       // Desactiva el modelo 3D
         deadSprite.SetActive(true);  // Activa el bicho apalstado en 2D
+		particle.SetActive(true);
+		dK.DeadSprite(lastPosition);
     }
 
     public void JumpSound() // Llamado desde animación cuando el bicho salta
@@ -139,9 +144,12 @@ public class PlayerController : MonoBehaviour {
             if (SceneController.pause == true && (!SceneController.canTutorial))
                 SceneController.PlayOrPauseFingers();
         }
+
+		lastPosition = position;
     }
 
 	private IEnumerator MiteMovement(float seconds) { //Escoge la posición a la que mover el bicho basándose en la entrada por teclado. Espera x segundos
+
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 			yield return MiteMovement_01(0, seconds);
 	    else if(Input.GetKeyDown(KeyCode.Alpha2))

@@ -15,6 +15,8 @@ public class SceneController : MonoBehaviour {
 	public GameObject inGameCanvas;   // UI del juego
 	public GameObject pauseCanvas;    // Panel de pausa
     public GameObject skinCanvas;      // Panel de cambios de skin
+	public GameObject eraseCanvas;
+	public GameObject eraseConfirmCanvas;
 
     [Header("Sonidos")]
 	public AudioSource music;      // BGM
@@ -51,6 +53,9 @@ public class SceneController : MonoBehaviour {
     private bool canRestart = false;      // Bloqueador de poder reiniciar o no
     private bool skinActive = false;       
     private bool canSkin = true;          // Bloqueador de poder abrir las skins o no
+	[SerializeField]private bool eraseOpen = false;
+	[SerializeField]private bool eraseConfirm = false;
+	private bool canErase = true;
     private Animator camAnim;             // Animador de la cámara
 
 	private static int m_currentVolume = 4;
@@ -66,6 +71,7 @@ public class SceneController : MonoBehaviour {
 		gameOverCanvas.SetActive(false);             // Deja desactivados todos los canvas menos el del menú
 		inGameCanvas.SetActive(false);
 		pauseCanvas.SetActive(false);
+		eraseCanvas.SetActive(false);
 
 		camAnim = camera.GetComponent<Animator>();   // Recupera el componente del animator
 		//Cursor.visible = false;                      // Quita el cursor. DEVOLVER EN LAS OPCIONES
@@ -100,21 +106,34 @@ public class SceneController : MonoBehaviour {
 
 	private void ControlPress() // Se ejecuta al pulsar CTRL
 	{
-		if(canRestart) // Si está el Game Over, reinicia el juego
-			Restart();
-
-		if(!started && !skinActive) // Si se puede empezar el juego lo empieza
-        {
-            StartGame();
-			controlPressed.Invoke();
-        }
-
-		if (tutorialCanEnd)
+        if (!isDead)
 		{
-			canTutorial = false;
-			PlayOrPauseFingers();
-			tutorialCanEnd = false;
-		}
+            if (canRestart) // Si está el Game Over, reinicia el juego
+                Restart();
+
+            if (!started && !skinActive && !eraseOpen) // Si se puede empezar el juego lo empieza
+            {
+                StartGame();
+                controlPressed.Invoke();
+            }
+
+            if (tutorialCanEnd)
+            {
+                canTutorial = false;
+                PlayOrPauseFingers();
+                tutorialCanEnd = false;
+            }
+
+            if (eraseOpen && !eraseConfirm)
+            {
+                Invoke("EraseConfirm", 0.1f);
+            }
+
+            if (eraseConfirm)
+            {
+                EraseData();
+            }
+        }
 	}
 	private void PauseUpdate() // Cuando se pausa el juego en el ESC
 	{
@@ -132,54 +151,70 @@ public class SceneController : MonoBehaviour {
 	private void Update() 
 	{
 		if (Input.GetKeyDown(KeyCode.F1))
-			PlayerPrefs.DeleteAll();
+			EraseMenu();
 
 		if(Input.GetKeyDown(KeyCode.LeftControl))
-		{
-			if (!isDead)
-                ControlPress();
-        }		
-			
-		if(Input.GetKeyDown(KeyCode.Escape)) 
-		{
-			if (!started && !skinActive)
-			{
-				escPressed.Invoke();
-				Application.Quit();
-            }
-			else if (!started && skinActive)
-			{
-                skinActive = !skinActive;
-                SkinUpdate();
-            }
-			else
-            {
-                pauseEsc = !pauseEsc;
-                PauseUpdate();
-            }
-		}
+            ControlPress();
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+			EscapePressed();
 
 		if(Input.GetKeyDown(KeyCode.Space)) 
-		{
-			if(!started)
-			{
-				spacePressed.Invoke();
-			}
-			m_currentVolume--;
-			if(m_currentVolume == 0)
-				m_currentVolume = musicVolumes.Length;
-			UpdateMusicVolume();
-		}
+			SpacePressed();
 
-		if(Input.GetKeyDown(KeyCode.LeftShift)) 
-		{
-			if(!started && canSkin) 
-			{
-				skinActive = !skinActive;
-				SkinUpdate();
-			}
-		}
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+			ShiftPressed();
 	}
+
+	private void ShiftPressed()
+	{
+        if (!started && canSkin && !eraseOpen)
+        {
+            skinActive = !skinActive;
+            SkinUpdate();
+        }
+
+        if (eraseOpen)
+        {
+            RestartTutorial();
+        }
+    }
+
+	private void EscapePressed()
+	{
+        if (!started && !skinActive)
+        {
+            escPressed.Invoke();
+            Application.Quit();
+        }
+        else if (!started && skinActive)
+        {
+            skinActive = !skinActive;
+            SkinUpdate();
+        }
+        else
+        {
+            pauseEsc = !pauseEsc;
+            PauseUpdate();
+        }
+        if (eraseConfirm)
+            EraseConfirm();
+		if (eraseOpen)
+			EraseMenu();
+
+    }
+
+	private void SpacePressed()
+	{
+        if (!started)
+        {
+            spacePressed.Invoke();
+        }
+        m_currentVolume--;
+        if (m_currentVolume == 0)
+            m_currentVolume = musicVolumes.Length;
+        UpdateMusicVolume();
+    }
 
 	// Métodos públicos
 	public static void PlayOrPauseFingers() // Para o reactiva el juego
@@ -218,6 +253,7 @@ public class SceneController : MonoBehaviour {
     public void StartGame() // Inicia el juego
     {
         canSkin = false;                  // Bloquea abrir el menú de Skins
+		canErase = false;
         camAnim.SetTrigger("start");      // Mueve la cámara al juego
 		menu.SetTrigger("start");         //Quita el menú
 		lightAnim.SetTrigger("start");
@@ -262,4 +298,39 @@ public class SceneController : MonoBehaviour {
 		canRestart = true;
 		isDead = false;
 	}
+
+	void EraseMenu()
+	{
+		if (!started && !skinActive && !eraseOpen && canErase)
+		{
+			eraseOpen = true;
+            startCanvas.SetActive(!eraseOpen);
+            eraseCanvas.SetActive(true);
+        }
+		else if (eraseOpen)
+		{
+            startCanvas.SetActive(eraseOpen);
+			eraseCanvas.SetActive(false);
+			eraseOpen = false;
+        }
+	}
+
+	void EraseConfirm()
+	{
+        eraseCanvas.SetActive(!eraseCanvas.activeInHierarchy);
+        eraseConfirmCanvas.SetActive(!eraseConfirmCanvas.activeInHierarchy);
+        eraseConfirm = !eraseConfirm;
+    }
+
+	void EraseData()
+	{
+		PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene("GameScene");
+    }
+
+	void RestartTutorial()
+	{
+		PlayerPrefs.DeleteKey("tutorialDone");
+        SceneManager.LoadScene("GameScene");
+    }
 }

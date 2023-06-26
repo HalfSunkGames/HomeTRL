@@ -17,7 +17,7 @@ public class KeyboardChange : MonoBehaviour
     public string[] recordsUnlocked;
     public TextMeshProUGUI infotext;
     public Sprite[] pressedPanel;
-    public GameObject skinPanel;
+    public Image skinPanel;
     public bool canChange = false;
 
     // Propiedades privadas
@@ -261,18 +261,18 @@ public class KeyboardChange : MonoBehaviour
 
     void LeftArrow()
     {
-        skinPanel.GetComponent<Image>().sprite = pressedPanel[1];
+        skinPanel.sprite = pressedPanel[1];
         Invoke("Restore", 0.3f);
     }
 
     void RightArrow()
     {
-        skinPanel.GetComponent<Image>().sprite = pressedPanel[2];
+        skinPanel.sprite = pressedPanel[2];
         Invoke("Restore", 0.3f);
     }
 
     void Restore()
     {
-        skinPanel.GetComponent<Image>().sprite = pressedPanel[0];
+        skinPanel.sprite = pressedPanel[0];
     }
 }

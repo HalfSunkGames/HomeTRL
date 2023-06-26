@@ -6,10 +6,12 @@ public class KeyboardPosition : MonoBehaviour
 {
 
     public static List<Vector3> positions = new List<Vector3>();
+    public static List<Vector3> offsets = new List<Vector3>();
 
     void Start()
     {
         FillPositionList(positions);
+        FillOffsetList(offsets);
     }
 
     //Rellena el array con las posiciones de las teclas
@@ -92,6 +94,83 @@ public class KeyboardPosition : MonoBehaviour
         positions.Add(posM);
         positions.Add(posCTRL);
 
+    }
+
+    void FillOffsetList(List<Vector3> offsets)
+    {
+        Vector3 off1 = new Vector3(-1.88f, 0, 1.29f);    //0 - Alpha 1
+        Vector3 off2 = new Vector3(-3.67f, 0, 1.29f);    //1
+        Vector3 off3 = new Vector3(-5.48f, 0, 1.29f);    //2
+        Vector3 off4 = new Vector3(-7.3f, 0, 1.29f);    //3
+        Vector3 off5 = new Vector3(-9.11f, 0, 1.29f);    //4
+        Vector3 off6 = new Vector3(-10.95f, 0, 1.29f);    //5
+        Vector3 off7 = new Vector3(-12.77f, 0, 1.29f);    //6
+        Vector3 off8 = new Vector3(-14.57f, 0, 1.29f);    //7
+        Vector3 off9 = new Vector3(-16.4f, 0, 1.29f);    //8
+        Vector3 off0 = new Vector3(-18.2f, 0, 1.29f);    //9
+        Vector3 offQ = new Vector3(-2.8f, -2.2f, 1.29f);    //10
+        Vector3 offW = new Vector3(-4.6f, -2.2f, 1.29f);    //11
+        Vector3 offE = new Vector3(-6.45f, -2.2f, 1.29f);   //12
+        Vector3 offR = new Vector3(-8.26f, -2.2f, 1.29f);    //13
+        Vector3 offT = new Vector3(-10.07f, -2.2f, 1.29f);    //14
+        Vector3 offY = new Vector3(-11.87f, -2.2f, 1.29f);    //15
+        Vector3 offU = new Vector3(-13.7f, -2.2f, 1.29f);    //16
+        Vector3 offI = new Vector3(-15.5f, -2.2f, 1.29f);    //17
+        Vector3 offO = new Vector3(-17.3f, -2.2f, 1.29f);    //18
+        Vector3 offP = new Vector3(-19.18f, -2.2f, 1.29f);     //19
+        Vector3 offA = new Vector3(-3.57f, -4.38f, 1.29f);   //20
+        Vector3 offS = new Vector3(-5.45f, -4.38f, 1.29f);   //21
+        Vector3 offD = new Vector3(-7.27f, -4.38f, 1.29f);   //22
+        Vector3 offF = new Vector3(-9.1f, -4.38f, 1.29f);    //23
+        Vector3 offG = new Vector3(-10.89f, -4.38f, 1.29f);    //24
+        Vector3 offH = new Vector3(-12.7f, -4.38f, 1.29f);     //25
+        Vector3 offJ = new Vector3(-14.5f, -4.38f, 1.29f);     //26
+        Vector3 offK = new Vector3(-16.34f, -4.38f, 1.29f);    //27
+        Vector3 offL = new Vector3(-18.15f, -4.38f, 1.29f);     //28
+        Vector3 offZ = new Vector3(-4.01f, -6.55f, 1.29f);   //29
+        Vector3 offX = new Vector3(-5.8f, -6.55f, 1.29f);   //30
+        Vector3 offC = new Vector3(-7.61f, -6.55f, 1.29f);    //31
+        Vector3 offV = new Vector3(-9.41f, -6.55f, 1.29f);     //32
+        Vector3 offB = new Vector3(-11.25f, -6.55f, 1.29f);    //33
+        Vector3 offN = new Vector3(-13.1f, -6.55f, 1.29f);    //34
+        Vector3 offM = new Vector3(-14.85f, -6.55f, 1.29f);    //35
+
+        offsets.Add(off1);
+        offsets.Add(off2);
+        offsets.Add(off3);
+        offsets.Add(off4);
+        offsets.Add(off5);
+        offsets.Add(off6);
+        offsets.Add(off7);
+        offsets.Add(off8);
+        offsets.Add(off9);
+        offsets.Add(off0);
+        offsets.Add(offQ);
+        offsets.Add(offW);
+        offsets.Add(offE);
+        offsets.Add(offR);
+        offsets.Add(offT);
+        offsets.Add(offY);
+        offsets.Add(offU);
+        offsets.Add(offI);
+        offsets.Add(offO);
+        offsets.Add(offP);
+        offsets.Add(offA);
+        offsets.Add(offS);
+        offsets.Add(offD);
+        offsets.Add(offF);
+        offsets.Add(offG);
+        offsets.Add(offH);
+        offsets.Add(offJ);
+        offsets.Add(offK);
+        offsets.Add(offL);
+        offsets.Add(offZ);
+        offsets.Add(offX);
+        offsets.Add(offC);
+        offsets.Add(offV);
+        offsets.Add(offB);
+        offsets.Add(offN);
+        offsets.Add(offM);
     }
 
 }

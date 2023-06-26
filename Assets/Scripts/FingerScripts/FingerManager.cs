@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class FingerManager : MonoBehaviour {
 	public UnityEvent[] press;   // Array de UnityEvents
-	public GameObject finger;    // Prefab del dedo
+	public GameObject[] finger;    // Prefab del dedo
 
 	private void Awake() {
 		var allKeys = GetComponentsInChildren<KeyPressed>();
@@ -25,7 +25,8 @@ public class FingerManager : MonoBehaviour {
 		int randomPosition = UnityEngine.Random.Range(0, press.Length);   // Coge una posición aleatoria de caída de dedo
 		int randomRotation = UnityEngine.Random.Range(0, 360);            // Coge una rotación aleatoria de dedo
 
-		Instantiate(finger, KeyboardPosition.positions[randomPosition], Quaternion.Euler(0, randomRotation, 0)); // Instancia el dedo en una posición
+		int randomFinger = Random.Range(0, 2);
+		Instantiate(finger[randomFinger], KeyboardPosition.positions[randomPosition], Quaternion.Euler(0, randomRotation, 0)); // Instancia el dedo en una posición
 
 		press[randomPosition].Invoke();
 	}

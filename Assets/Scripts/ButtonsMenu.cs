@@ -16,51 +16,51 @@ public class ButtonsMenu : MonoBehaviour
     public Sprite spacePress;
 
     [Header("Canvas")]
-    public GameObject start;
-    public GameObject skins;
-    public GameObject exit;
-    public GameObject volume;
+    public Image start;
+    public Image skins;
+    public Image exit;
+    public Image volume;
 
     public void PressCtrl()
     {
-        start.GetComponent<Image>().sprite = ctrlPress;
+        start.sprite = ctrlPress;
         Invoke("UnpressCtrl", 0.3f);
     }
 
     private void UnpressCtrl()
     {
-        start.GetComponent<Image>().sprite = ctrl;
+        start.sprite = ctrl;
     }    
     public void PressShift()
     {
-        skins.GetComponent<Image>().sprite = shiftPress;
+        skins.sprite = shiftPress;
         Invoke("UnpressShift", 0.3f);
     }
 
     private void UnpressShift()
     {
-        skins.GetComponent<Image>().sprite = shift;
+        skins.sprite = shift;
     }    
     
     public void PressEsc()
     {
-        exit.GetComponent<Image>().sprite = escPress;
+        exit.sprite = escPress;
         Invoke("UnpressEsc", 0.3f);
     }
 
     private void UnpressEsc()
     {
-        exit.GetComponent<Image>().sprite = esc;
+        exit.sprite = esc;
     }    
     
     public void PressSpace()
     {
-        volume.GetComponent<Image>().sprite = spacePress;
+        volume.sprite = spacePress;
         Invoke("UnpressSpace", 0.3f);
     }
 
     private void UnpressSpace()
     {
-        volume.GetComponent<Image>().sprite = space;
+        volume.sprite = space;
     }
 }
