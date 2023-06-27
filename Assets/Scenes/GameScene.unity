@@ -2073,7 +2073,6 @@ MonoBehaviour:
   skinPanel: {fileID: 1293599395}
   canChange: 0
   unlockLvl: 1
-  keyPanCounter: 1
 --- !u!1001 &400746070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2217,7 +2216,7 @@ MonoBehaviour:
   music: {fileID: 534669908}
   deadSound: {fileID: 410890496}
   camera: {fileID: 534669904}
-  light: {fileID: 1545692556}
+  lightAnim: {fileID: 1545692557}
   audioLightManager: {fileID: 1385547333}
   savePoints:
     m_PersistentCalls:
@@ -4303,7 +4302,7 @@ MonoBehaviour:
         m_CallState: 2
   fingerEvent: {fileID: 1133034362}
   dK: {fileID: 673693904}
-  lastPosition: 0
+  tD: {fileID: 1457216190}
 --- !u!135 &673693896
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10643,7 +10642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81e09c5cd6a2fee40b32d4c15687d6c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textgame: {fileID: 0}
 --- !u!1 &962687618
 GameObject:
   m_ObjectHideFlags: 0
@@ -13400,11 +13398,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightOffMat: {fileID: 2100000, guid: fd5b9addd26d52e4a9da7b3e1febcc57, type: 2}
   lightOnMat: {fileID: 2100000, guid: be1950bb850c6f6469803eafa512864a, type: 2}
-  lights:
-  - {fileID: 1712624031}
-  - {fileID: 993013006}
-  - {fileID: 477653682}
-  - {fileID: 309857983}
+  lightRenderers:
+  - {fileID: 1712624034}
+  - {fileID: 993013008}
+  - {fileID: 477653684}
+  - {fileID: 309857985}
 --- !u!1 &1390677933
 GameObject:
   m_ObjectHideFlags: 0
@@ -23931,7 +23929,7 @@ PrefabInstance:
     - target: {fileID: 6241636531025993821, guid: 988d98faa50787e40a302ae4b39d3c3f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6241636531025993821, guid: 988d98faa50787e40a302ae4b39d3c3f,
         type: 3}
@@ -24198,6 +24196,7 @@ MonoBehaviour:
   - {fileID: 7242862405896811707, guid: 1788b697c3f786848ab4fc138ba4c084, type: 3}
   - {fileID: 7242862405896811707, guid: 305728d5d03302646831d6e9ffe30cad, type: 3}
   tutorialPosition: 1e0000001100000021000000140000001c0000002100000014000000
+  tD: {fileID: 1457216190}
   currentOrder: 0
 --- !u!1 &3038876781552917718
 GameObject:
@@ -25050,7 +25049,7 @@ PrefabInstance:
     - target: {fileID: 5965355028608364129, guid: 61f1d44991c9b854e941527b8a5eea0e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6162112411588731220, guid: 61f1d44991c9b854e941527b8a5eea0e,
         type: 3}

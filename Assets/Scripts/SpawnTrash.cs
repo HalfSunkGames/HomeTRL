@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class SpawnTrash : MonoBehaviour {
     // Propiedades públicas
-	public GameObject[] trashes; // Array pública donde meter variantes de trash
-	public int[] tutorialPosition;
-	[SerializeField] private int currentOrder = 0;
+	public GameObject[] trashes;                    // Array pública donde meter variantes de trash
+	public int[] tutorialPosition;                  // Teclas donde aparecerán las trashes del tutorial
+    public TutorialDisplay tD;
+    [SerializeField] private int currentOrder = 0;  // Pasos del tutorial
 
 	// Propiedades privadas
-	private TutorialDisplay tD;
+	
+
+    // Métodos públicos
+    public void ContinueTutorial() // Empieza a aparecer la trash
+    {
+        Invoke("DelayTutorialPanel", 3f);
+        StartCoroutine(TutorialTrash());
+    }
 
     // Métodos privados
-	private void Start() {
+    private void Start() 
+	{
 		StartCoroutine(SpawnChip()); // Inicia el bucle
-		tD = GameObject.Find("TutorialDisplay").GetComponent<TutorialDisplay>();
 	}
 
 	IEnumerator SpawnChip() {
@@ -66,12 +74,6 @@ public class SpawnTrash : MonoBehaviour {
 			SceneController.isThereTrash = false;
         }
 			
-    }
-
-	public void ContinueTutorial()
-	{
-		Invoke("DelayTutorialPanel", 3f);
-        StartCoroutine(TutorialTrash());
     }
 
 	private void DelayTutorialPanel()

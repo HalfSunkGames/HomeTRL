@@ -6,16 +6,16 @@ using UnityEngine.Video;
 
 public class IntroManager : MonoBehaviour
 {
-
-    [SerializeField] private VideoPlayer intro;
-    [SerializeField] private AudioSource introAudio;
+    // Métodos privados
+    [SerializeField] private VideoPlayer intro;      // Video de intro
+    [SerializeField] private AudioSource introAudio; // Sonido de intro
 
 
     void Start()  // Start is called before the first frame update
     {
-        intro.Play();
-        Invoke("IntroSound", 1f);
-        Invoke("StartGame", 7f);
+        intro.Play();             // Reproduce el video
+        Invoke("IntroSound", 1f); // delay del audio
+        Invoke("StartGame", 7f);  // Inicia el juego al terminar
     }
 
     private void IntroSound()

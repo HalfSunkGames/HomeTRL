@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class KeyboardPosition : MonoBehaviour
 {
-
-    public static List<Vector3> positions = new List<Vector3>();
-    public static List<Vector3> offsets = new List<Vector3>();
+    // Variables públicas
+    public static List<Vector3> positions = new List<Vector3>(); // Lista de las coordenadas a las que puede acceder el jugador
+    public static List<Vector3> offsets = new List<Vector3>();   // Lista de offsets del constrain al morir
 
     void Start()
     {
-        FillPositionList(positions);
-        FillOffsetList(offsets);
+        FillPositionList(positions); // Rellena el array con las posiciones de las teclas
+        FillOffsetList(offsets);     // Rellena el array con el offset del sprite al morir
     }
 
-    //Rellena el array con las posiciones de las teclas
+    
     void FillPositionList(List<Vector3> positions)
     {
         

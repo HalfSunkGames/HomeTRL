@@ -4,48 +4,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour 
+{
 	// Propiedades públicas
     [Header("Sonidos")]
-	public AudioSource jumpSound;
-	public AudioSource trashSound;
-	public AudioSource storeSound;
+	public AudioSource jumpSound;  // Sonido salto
+	public AudioSource trashSound; // Sonido comida
+	public AudioSource storeSound; // Sonido de guardar los puntos
 
     [Header("GameObjects")]
 	public GameObject mesh;        // Bicho en 3D
 	public GameObject deadSprite;  // Bicho aplastado en 2D
-	public GameObject particle;   
+	public GameObject particle;    // Partula de aplastamiento
 
     [Header("UnityEvents")]
-    public UnityEvent gameOver;           // Invoca comandos relacionados con la muerte del jugador
+    public UnityEvent gameOver;         // Invoca comandos relacionados con la muerte del jugador
     public UnityEvent temporalPoints;   // Suma puntos temporales
     public UnityEvent points;           // Suma puntos totales
 	public UnityEvent continueTutorial;
 
 	[Header("Referencias")]
 	public FingerEvent fingerEvent;     // Referencia al script de los dedos para poder bajar la velocidad
-	public DetectDeathKey dK;
-	public int lastPosition;
+	public DetectDeathKey dK;           // Referencia para llamar el constrain de la tecla
+    public TutorialDisplay tD;          // Controlador del tutorial
 
     // Propiedades privadas
-    private Animator anim;   // Animador del personaje
-	private TutorialDisplay tD;
-	
-    // Métodos MonoBehaviour
-	private void Start() {
+    private Animator anim;               // Animador del personaje
+    private int lastPosition;            // Guarda la última posición del jugador para el constrain
+
+    // Métodos de Unity
+    private void Start() 
+	{
 		anim = GetComponent<Animator>();                     // Recupera el componente del animador
 		transform.position = KeyboardPosition.positions[36]; // Deja inicialmente el ácaro en el CTRL
 		mesh.SetActive(true);                                // Deja el bicho en 3D activo
 		deadSprite.SetActive(false);                         // Deja el bicho en 2D invisible
-		tD = GameObject.Find("TutorialDisplay").GetComponent<TutorialDisplay>();
 	}
 
 	void Update() 
 	{
 		if(SceneController.started == true) 
-		{
 			StartCoroutine(MiteMovement(0.4f));  // El bicho puede moverse siempre y cuando el juego haya empezado
-		}
 	}
 
     private void OnTriggerEnter(Collider other)
@@ -77,18 +76,17 @@ public class PlayerController : MonoBehaviour {
         jumpSound.Play();   // Hace sonar el salto
     }
 
-	public void AnimMultiplayer()
+	public void AnimMultiplayer() // Anima el multiplicador de puntos
 	{
 		anim.SetTrigger("multi");
 	}
 
 	// Corutinas
-
 	#region Movimiento
 
 	private IEnumerator MiteMovement_01(int position, float seconds) 
 	{
-		if (SceneController.tutorialfase1)
+		if (SceneController.tutorialfase1) // Guia el tutorial por fases
 		{
 			if (position == 25)
 			{

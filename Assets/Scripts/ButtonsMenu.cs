@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class ButtonsMenu : MonoBehaviour
 {
-    [Header("Sprites")]
+    // Variables públicas
+    [Header("Sprites")] // Imagenes a sustituir
     public Sprite ctrl;
     public Sprite ctrlPress;
     public Sprite shift;
@@ -15,52 +16,56 @@ public class ButtonsMenu : MonoBehaviour
     public Sprite space;
     public Sprite spacePress;
 
-    [Header("Canvas")]
+    [Header("Canvas")] // Componente a cambiar
     public Image start;
     public Image skins;
     public Image exit;
     public Image volume;
 
-    public void PressCtrl()
+    // Métodos públicos
+    public void PressCtrl() // Al pulsar el Control
     {
-        start.sprite = ctrlPress;
+        start.sprite = ctrlPress; // Cambia el sprite
         Invoke("UnpressCtrl", 0.3f);
     }
 
-    private void UnpressCtrl()
-    {
-        start.sprite = ctrl;
-    }    
-    public void PressShift()
+   
+    public void PressShift() // Al pulsar el Shift
     {
         skins.sprite = shiftPress;
         Invoke("UnpressShift", 0.3f);
-    }
-
-    private void UnpressShift()
-    {
-        skins.sprite = shift;
-    }    
+    }  
     
-    public void PressEsc()
+    public void PressEsc() // Al pulsar el escape
     {
         exit.sprite = escPress;
         Invoke("UnpressEsc", 0.3f);
-    }
-
-    private void UnpressEsc()
-    {
-        exit.sprite = esc;
-    }    
+    }   
     
-    public void PressSpace()
+    public void PressSpace() // Al pulsar el espacio
     {
         volume.sprite = spacePress;
         Invoke("UnpressSpace", 0.3f);
     }
 
+    // Métodos privados
     private void UnpressSpace()
     {
         volume.sprite = space;
+    }
+
+    private void UnpressCtrl()
+    {
+        start.sprite = ctrl;
+    }
+
+    private void UnpressShift()
+    {
+        skins.sprite = shift;
+    }
+
+    private void UnpressEsc()
+    {
+        exit.sprite = esc;
     }
 }

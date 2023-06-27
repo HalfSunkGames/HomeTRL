@@ -8,14 +8,14 @@ using UnityEngine.UI;
 public class PointsController : MonoBehaviour
 {
     // Propiedades públicas
-    [Header("UI Texts")]        // Los textos del UI
+    [Header("UI Texts")]   // Los textos del UI
     public TextMeshProUGUI tempPointsTxt;
     public TextMeshProUGUI pointsTxt;
     public Text highScoreTxt;
 
     [Header("Multiplier")]
-    public Sprite[] multiplierSprites;
-    public GameObject multiplierDisplay;
+    public Sprite[] multiplierSprites;      // Todas las imagenes de multiplicadores
+    public GameObject multiplierDisplay;    // Donde muestra el multiplicador
     public GameObject p_multiplierDisplay;
     public Shake shake;
     public UnityEvent animPMulti;
@@ -26,11 +26,9 @@ public class PointsController : MonoBehaviour
     [HideInInspector]public static int points = 0;     // Puntos totales del jugador (Stored)
     private int temporalPoints = 0;   // Puntos temporales que lleva el jugador encima (Carrying)
     private int multiplier = 1;       // Multiplicador de puntos
-    public int highScore = 1000;     // Puntuación máxima obtenida
+    public int highScore = 1000;      // Puntuación máxima obtenida
     private int newScore;             // Variable para guardar la puntuación obtenida en cada partida para guardar 
     private Animator doritoAnim;
-    private Animator multiplierDisplayAnim;
-    private Animator p_multiplierDisplayAnim;
     private bool canShowAnimation = false;
 	
     // Métodos MonoBehaviour
@@ -38,8 +36,6 @@ public class PointsController : MonoBehaviour
     {
         highScore = (PlayerPrefs.GetInt("highscore") == 0f) ? int.MinValue : PlayerPrefs.GetInt("highscore");
         doritoAnim = dorito.GetComponent<Animator>();
-        multiplierDisplayAnim = multiplierDisplay.GetComponent<Animator>();
-        p_multiplierDisplayAnim = p_multiplierDisplay.GetComponent<Animator>();
     }
 
     // Métodos públicos
@@ -64,6 +60,7 @@ public class PointsController : MonoBehaviour
     {
         if (temporalPoints != 0)
             doritoAnim.SetTrigger("points");// Muestra la animación del dorito
+
         points += temporalPoints; // Guarda en los puntos totales los puntos temporales iguales
         multiplier = 1;           // Resetea el multiplicador
         temporalPoints = 0;       // Resetea los puntos temporales
@@ -93,7 +90,7 @@ public class PointsController : MonoBehaviour
         if (multiplier > 1)                                     // Si el multiplicador no es un (Solo sale a partir del x2)
         {
             int multIndex = 0;
-            switch (multiplier)
+            switch (multiplier)                                 // Añade vibración al multiplicador según su intensidad
             {
                 case 2:
                     multIndex = 0;
@@ -137,6 +134,5 @@ public class PointsController : MonoBehaviour
         }   
         else
             shake.ShakeInput(shakeForce[0]);
-
     }
 }

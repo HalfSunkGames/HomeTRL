@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class MatMove : MonoBehaviour
 {
-    public float speedX = 0.1f;
+    // Variables públicas
+    public float speedX = 0.1f; // Velocidad a la que se mueve el material
     public float speedY = 0.1f;
 
+    // Variables privadas
     private float curX;
     private float curY;
     private Material mat;
     private Vector2 curPosition;
 
-    // Use this for initialization
+    // Metodos Monodevelop
     void Start()
     {
         mat = GetComponent<Renderer>().material;
@@ -21,7 +23,6 @@ public class MatMove : MonoBehaviour
         curPosition = new Vector2(curX, curY);
     }
 
-    // Update is called once per frame
     void Update()
     {
         curX += Time.deltaTime * speedX;

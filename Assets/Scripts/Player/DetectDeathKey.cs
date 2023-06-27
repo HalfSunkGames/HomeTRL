@@ -5,23 +5,22 @@ using UnityEngine.Animations;
 
 public class DetectDeathKey : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private GameObject[] allkeys;
-    private GameObject deathkey;
-
-    private int lastPosition;
-
-    private ParentConstraint parentConstraint;
+    // Variables públicas
     public GameObject deathSprite;
 
+    // Variables privadas
+    private GameObject deathkey;                 // Tecla sobre la que muere el jugador
+    private int lastPosition;                    // Recupera el id de la tecla
+    private ParentConstraint parentConstraint;   // Componentes constrain
     private ConstraintSource constraintSource;
 
-    public void DeadSprite(int lP)
+    // Métodos públicos
+    public void DeadSprite(int lP) // Llamado desde la muerte del jugador para hacer que el sprite se enganche a la tecla
     {
         lastPosition = lP;
-        AssignKey();
-        Debug.Log(deathkey.name);
+        AssignKey();        // Asigna la deathkey según la última posición del jugador
 
+        // Aplica el constrain
         constraintSource.sourceTransform = deathkey.transform;
         parentConstraint = deathSprite.GetComponent<ParentConstraint>();
         parentConstraint.constraintActive = true;
@@ -32,7 +31,8 @@ public class DetectDeathKey : MonoBehaviour
         parentConstraint.SetTranslationOffset(0, KeyboardPosition.offsets[lastPosition]);
     }
 
-    private void AssignKey()
+    // Métodos privados
+    private void AssignKey() // Asigna la deathkey según la última posición del jugador
     {
         switch (lastPosition)
         {

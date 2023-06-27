@@ -6,46 +6,33 @@ using UnityEngine.UI;
 
 public class KeyboardChange : MonoBehaviour
 {
+    // Propiedades públicas
     [Header("Desbloqueos")]
-	public bool[] unlocked;
+	public bool[] unlocked; // Para detectar cuantos teclados están desbloqueados
 
-	public GameObject[] keyboards;
+    [Header("Teclados")]
+	public GameObject[] keyboards; // Todos los teclados
 
     [Header("UI")]
-    public GameObject[] keyPanels;
-    public string[] recordsLocked;
-    public string[] recordsUnlocked;
-    public TextMeshProUGUI infotext;
-    public Sprite[] pressedPanel;
-    public Image skinPanel;
+    public GameObject[] keyPanels;    // Imagenes de los distintos teclados
+    public string[] recordsLocked;    // El texto en gris (Sin desbloquar)
+    public string[] recordsUnlocked;  // El texto en blanco (Bloqueado)
+    public TextMeshProUGUI infotext;  // Texto con la información de puntos necesarios para desbloquear
+    public Sprite[] pressedPanel;     // Variaciones del menú de skins según la tecla pulsada
+    public Image skinPanel;           // Menú de skins
     public bool canChange = false;
 
     // Propiedades privadas
-    public int unlockLvl = 1; // Esto indica los teclados desbloqueados que tienes.
-
-    [SerializeField]private int keyPanCounter = 1;
+    public int unlockLvl = 1;      // Esto indica los teclados desbloqueados que tienes.
+    private int keyPanCounter = 1; // Indica por cual iteración del menú de skins vamos al seleccionar
     
 
     // Métodos MonoBehaviour
     void Awake()
     {
-        UnlocksUpdate();
-        KeyboardAtStart();
-        UpdateSkin();
-    }
-
-    void UnlocksUpdate()
-    {
-        if (!PlayerPrefs.HasKey("unlockLvl"))
-        {
-            PlayerPrefs.SetInt("unlockLvl", 1);
-        }
-            
-        unlockLvl = PlayerPrefs.GetInt("unlockLvl");
-        for (int i = 0; i <= unlockLvl - 1; i++)
-        {
-            unlocked[i] = true;
-        }
+        UnlocksUpdate();   // Recoge los teclados debloqueados
+        KeyboardAtStart(); // Inicia con el mismo teclado que la partida anterior
+        UpdateSkin();      // Actualiza el menú y el teclado seleccionado
     }
 
     private void Update()
@@ -78,6 +65,20 @@ public class KeyboardChange : MonoBehaviour
                     UpdateSkin();
                 }
             }         
+        }
+    }
+
+    private void UnlocksUpdate()  // Recupera los teclados desbloqueados
+    {
+        if (!PlayerPrefs.HasKey("unlockLvl"))
+        {
+            PlayerPrefs.SetInt("unlockLvl", 1);
+        }
+
+        unlockLvl = PlayerPrefs.GetInt("unlockLvl");
+        for (int i = 0; i <= unlockLvl - 1; i++)
+        {
+            unlocked[i] = true;
         }
     }
 
@@ -259,19 +260,19 @@ public class KeyboardChange : MonoBehaviour
         }
     }
 
-    void LeftArrow()
+    private void LeftArrow() // Hace que en el menú esté pulsada la tecla izquierda 0.3 segundos
     {
         skinPanel.sprite = pressedPanel[1];
         Invoke("Restore", 0.3f);
     }
 
-    void RightArrow()
+    private void RightArrow() // Hace lo propio con la derecha
     {
         skinPanel.sprite = pressedPanel[2];
         Invoke("Restore", 0.3f);
     }
 
-    void Restore()
+    private void Restore()
     {
         skinPanel.sprite = pressedPanel[0];
     }

@@ -10,13 +10,13 @@ public class SceneController : MonoBehaviour {
     // Propiedades públicas
 
     [Header("Canvas")]
-	public GameObject gameOverCanvas; // Canvas del monitor
-	public GameObject startCanvas;    // Panel del menú inicial
-	public GameObject inGameCanvas;   // UI del juego
-	public GameObject pauseCanvas;    // Panel de pausa
-    public GameObject skinCanvas;      // Panel de cambios de skin
-	public GameObject eraseCanvas;
-	public GameObject eraseConfirmCanvas;
+	public GameObject gameOverCanvas;      // Canvas del monitor
+	public GameObject startCanvas;         // Panel del menú inicial
+	public GameObject inGameCanvas;        // UI del juego
+	public GameObject pauseCanvas;         // Panel de pausa
+    public GameObject skinCanvas;          // Panel de cambios de skin
+	public GameObject eraseCanvas;         // Panel de borrar los datos
+	public GameObject eraseConfirmCanvas;  // Panel de confirmación de borrar los datos
 
     [Header("Sonidos")]
 	public AudioSource music;      // BGM
@@ -33,12 +33,12 @@ public class SceneController : MonoBehaviour {
     public static bool canTutorial = false;      // Bloqueador de poder abrir el tutorial o no
 	public static bool tutorialCanEnd = false;
 
-	public static bool tutorialfase1 = false;
+	public static bool tutorialfase1 = false; // Determina la fase acual del tutorial
 	public static bool tutorialfase2 = false;
 	public static bool tutorialfase3 = false;
 	public static bool tutorialfase4 = false;
 
-	public GameObject light;
+    public Animator lightAnim;
 
     [Header("Unity Events")]
 	public LightAudio audioLightManager; // Para cambiar las luces según el volumen
@@ -62,7 +62,7 @@ public class SceneController : MonoBehaviour {
 	private readonly float[] musicVolumes = new float[] { 0.8f, 0.6f, 0.3f, 0.15f, 0f }; // Volumenes de la música
 	private Animator menu;
 	private TutorialDisplay tD;
-    private Animator lightAnim;
+    
 	private bool isDead = false;
 
     // Métedos MonoBehaviour
@@ -74,7 +74,6 @@ public class SceneController : MonoBehaviour {
 		eraseCanvas.SetActive(false);
 
 		camAnim = camera.GetComponent<Animator>();   // Recupera el componente del animator
-		//Cursor.visible = false;                      // Quita el cursor. DEVOLVER EN LAS OPCIONES
 		UpdateMusicVolume();                         // Actualiza el volumen respecto a la partida anterior
         pause = true;
         started = false;
@@ -82,138 +81,24 @@ public class SceneController : MonoBehaviour {
 
 		menu = GameObject.Find("MENU").GetComponent<Animator>();
 		tD = GameObject.Find("TutorialDisplay").GetComponent<TutorialDisplay>();
-		lightAnim = light.GetComponent<Animator>();
 	}
 
-	private void TutorialFirstTime()
-	{
-		if (!PlayerPrefs.HasKey("tutorialDone"))
-		{
-			canTutorial = true;
-			tutorialfase1 = true;
-            PlayerPrefs.SetInt("tutorialDone", 0);
-        }
-		else
-		{
-			tutorialfase1 = false;
-			tutorialfase2 = false;
-			tutorialfase3 = false;
-			tutorialfase4 = false;
-			canTutorial = false;
-			tutorialfase1 = false;
-		}
-    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+            EraseMenu();
 
-	private void ControlPress() // Se ejecuta al pulsar CTRL
-	{
-        if (!isDead)
-		{
-            if (canRestart) // Si está el Game Over, reinicia el juego
-                Restart();
-
-            if (!started && !skinActive && !eraseOpen) // Si se puede empezar el juego lo empieza
-            {
-                StartGame();
-                controlPressed.Invoke();
-            }
-
-            if (tutorialCanEnd)
-            {
-                canTutorial = false;
-                PlayOrPauseFingers();
-                tutorialCanEnd = false;
-            }
-
-            if (eraseOpen && !eraseConfirm)
-            {
-                Invoke("EraseConfirm", 0.1f);
-            }
-
-            if (eraseConfirm)
-            {
-                EraseData();
-            }
-        }
-	}
-	private void PauseUpdate() // Cuando se pausa el juego en el ESC
-	{
-		Time.timeScale = pauseEsc ? 0 : 1;
-		pauseCanvas.SetActive(pauseEsc);
-	}
-
-	private void SkinUpdate() // REVISAR
-	{
-		startCanvas.SetActive(!skinActive);
-		skinCanvas.SetActive(skinActive);
-		canChangeSkin.Invoke();
-	}
-
-	private void Update() 
-	{
-		if (Input.GetKeyDown(KeyCode.F1))
-			EraseMenu();
-
-		if(Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
             ControlPress();
 
-		if (Input.GetKeyDown(KeyCode.Escape))
-			EscapePressed();
+        if (Input.GetKeyDown(KeyCode.Escape))
+            EscapePressed();
 
-		if(Input.GetKeyDown(KeyCode.Space)) 
-			SpacePressed();
+        if (Input.GetKeyDown(KeyCode.Space))
+            SpacePressed();
 
-		if (Input.GetKeyDown(KeyCode.LeftShift))
-			ShiftPressed();
-	}
-
-	private void ShiftPressed()
-	{
-        if (!started && canSkin && !eraseOpen)
-        {
-            skinActive = !skinActive;
-            SkinUpdate();
-        }
-
-        if (eraseOpen)
-        {
-            RestartTutorial();
-        }
-    }
-
-	private void EscapePressed()
-	{
-        if (!started && !skinActive)
-        {
-            escPressed.Invoke();
-            Application.Quit();
-        }
-        else if (!started && skinActive)
-        {
-            skinActive = !skinActive;
-            SkinUpdate();
-        }
-        else
-        {
-            pauseEsc = !pauseEsc;
-            PauseUpdate();
-        }
-        if (eraseConfirm)
-            EraseConfirm();
-		if (eraseOpen)
-			EraseMenu();
-
-    }
-
-	private void SpacePressed()
-	{
-        if (!started)
-        {
-            spacePressed.Invoke();
-        }
-        m_currentVolume--;
-        if (m_currentVolume == 0)
-            m_currentVolume = musicVolumes.Length;
-        UpdateMusicVolume();
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            ShiftPressed();
     }
 
 	// Métodos públicos
@@ -271,8 +156,121 @@ public class SceneController : MonoBehaviour {
 		Application.OpenURL("https://halfsunkgames.itch.io");
 	}
 
-	// Métodos privados
-	private void UpdateMusicVolume() // Actualiza el volumen (Actualmente desde el Espacio, puede cambiar)
+    // Métodos privados
+    private void TutorialFirstTime() // Activa el tutorial si es la primera vez que se juega, si no lo salta
+    {
+        if (!PlayerPrefs.HasKey("tutorialDone"))
+        {
+            canTutorial = true;
+            tutorialfase1 = true;
+            PlayerPrefs.SetInt("tutorialDone", 0);
+        }
+        else
+        {
+            tutorialfase1 = false;
+            tutorialfase2 = false;
+            tutorialfase3 = false;
+            tutorialfase4 = false;
+            canTutorial = false;
+            tutorialfase1 = false;
+        }
+    }
+
+    private void ControlPress() // Se ejecuta al pulsar CTRL
+    {
+        if (!isDead)
+        {
+            if (canRestart) // Si está el Game Over, reinicia el juego
+                Restart();
+
+            if (!started && !skinActive && !eraseOpen) // Si se puede empezar el juego lo empieza
+            {
+                StartGame();
+                controlPressed.Invoke();
+            }
+
+            if (tutorialCanEnd) // Inicia el juego al terminar el tutorial
+            {
+                canTutorial = false;
+                PlayOrPauseFingers();
+                tutorialCanEnd = false;
+            }
+
+            if (eraseOpen && !eraseConfirm) // Abre el menú de confirmar borrar datos
+            {
+                Invoke("EraseConfirm", 0.1f); // Confirma borrar datos
+            }
+
+            if (eraseConfirm)
+            {
+                EraseData();
+            }
+        }
+    }
+    private void PauseUpdate() // Cuando se pausa el juego en el ESC
+    {
+        Time.timeScale = pauseEsc ? 0 : 1;
+        pauseCanvas.SetActive(pauseEsc);
+    }
+
+    private void SkinUpdate() // Actualiza el menú de skins
+    {
+        startCanvas.SetActive(!skinActive);
+        skinCanvas.SetActive(skinActive);
+        canChangeSkin.Invoke();
+    }
+
+    private void ShiftPressed() // Al pulsar shift
+    {
+        if (!started && canSkin && !eraseOpen) // Abre y cierra el menú de skins si estás en el menú
+        {
+            skinActive = !skinActive;
+            SkinUpdate();
+        }
+
+        if (eraseOpen) // Reinicia el tutorial si estás en el menú de opciones
+        {
+            RestartTutorial();
+        }
+    }
+
+    private void EscapePressed() // Al pulsar el escape
+    {
+        if (!started && !skinActive) // Si estás en el menú, apaga
+        {
+            escPressed.Invoke();
+            Application.Quit();
+        }
+        else if (!started && skinActive) // Cierra el menú de skins si setá abnierto
+        {
+            skinActive = !skinActive;
+            SkinUpdate();
+        }
+        else // Pausa el juego ingame
+        {
+            pauseEsc = !pauseEsc;
+            PauseUpdate();
+        }
+        if (eraseConfirm)    // Cierra los menús de borrar datos
+            EraseConfirm();
+        if (eraseOpen)
+            EraseMenu();
+
+    }
+
+    private void SpacePressed() // Al pulsar el espacio
+    {
+        if (!started) // Pulsa la tecla del GUI si estás en el menú
+        {
+            spacePressed.Invoke();
+        }
+        m_currentVolume--; // Cambia el volumen
+        if (m_currentVolume == 0)
+            m_currentVolume = musicVolumes.Length;
+        UpdateMusicVolume();
+    }
+
+    private void UpdateMusicVolume() // Actualiza el volumen (Actualmente desde el Espacio, puede cambiar)
 	{
 		music.volume = musicVolumes[m_currentVolume - 1];
 		audioLightManager.ChangeAudioLights(musicVolumes.Length - m_currentVolume);
@@ -299,7 +297,7 @@ public class SceneController : MonoBehaviour {
 		isDead = false;
 	}
 
-	void EraseMenu()
+	void EraseMenu() // Abre y cierra el menú de borrar datos
 	{
 		if (!started && !skinActive && !eraseOpen && canErase)
 		{
@@ -315,20 +313,20 @@ public class SceneController : MonoBehaviour {
         }
 	}
 
-	void EraseConfirm()
+	void EraseConfirm() // Abre el menú para confirmar si quieres borrar los datos, por si acaso
 	{
         eraseCanvas.SetActive(!eraseCanvas.activeInHierarchy);
         eraseConfirmCanvas.SetActive(!eraseConfirmCanvas.activeInHierarchy);
         eraseConfirm = !eraseConfirm;
     }
 
-	void EraseData()
+	void EraseData() // Reinicia la escena borrando el record y los teclados seleccionados
 	{
 		PlayerPrefs.DeleteAll();
         SceneManager.LoadScene("GameScene");
     }
 
-	void RestartTutorial()
+	void RestartTutorial() // Llamado desde el menú de reiniciar. Recarga la escena con el tutorial jugable
 	{
 		PlayerPrefs.DeleteKey("tutorialDone");
         SceneManager.LoadScene("GameScene");

@@ -8,7 +8,9 @@ public class DestroyFinger : MonoBehaviour
     // Propiedades públicas
     public GameObject pref; // Prefab del dedo completo
 
-    void Destroy()
+
+    // Métodos privados
+    private void Destroy()
     {
         Destroy(this.pref.gameObject); // Destruye el dedo cayendo
     }
@@ -18,7 +20,6 @@ public class DestroyFinger : MonoBehaviour
         if (other.CompareTag("Keyboard")) // Si es el teclado...
         {
             Invoke("Destroy", 0.38f); // Destruye el dedo pasado un tiempo concreto
-        }
-        
+        } 
     }
 }

@@ -4,26 +4,31 @@ using UnityEngine;
 
 public class Shake : MonoBehaviour
 {
-    public float shakeValue = 0;
+    // Propiedades públicas
+    public float shakeValue = 0;      // Valor de vibración
+    public Vector2 originalPosition;  // Posición original
+    public Vector2 newPos;            // Posición a la que se mueve
+    
+    // Propiedades privadas
     private RectTransform rT;
-    public Vector2 originalPosition;
-    public Vector2 newPos;
-    // Start is called before the first frame update
-    void Start()
+
+    // Métodos Monodevelop
+    void Start()     // Start is called before the first frame update
     {
-        rT = GetComponent<RectTransform>();
-        originalPosition = rT.anchoredPosition;
+        rT = GetComponent<RectTransform>();        
+        originalPosition = rT.anchoredPosition;   // Guarda la posición original para vibrar
     }
 
     // Update is called once per frame
     void Update()
-    {    
+    {   // En cada frame, se mueve a una posición cercana aleatoria, más lejana según la intensidad que le entra
         newPos.x = Random.Range(originalPosition.x - 1 * shakeValue, originalPosition.x + 2 * shakeValue);        
         newPos.y = Random.Range(originalPosition.y - 1 * shakeValue, originalPosition.y + 2 * shakeValue);
         rT.anchoredPosition = newPos;
     }
 
-    public void ShakeInput(float input)
+    // Métodos public
+    public void ShakeInput(float input) // Determina la intensidad de la vibración
     {
         shakeValue = input;
     }
