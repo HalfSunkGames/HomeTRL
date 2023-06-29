@@ -110,37 +110,37 @@ public class KeyboardChange : MonoBehaviour
 
     public void UnlockKeyboard(int hS)
     {
-        if (hS > 99 && hS < 200)  // Se desbloquea con 75
+        if (hS > 99 && hS < 200)  // 99 - 200
         {
             // teclado 2 black
             unlockLvl = 2;
         }
-        else if (hS >= 200 && hS < 350)
+        else if (hS >= 200 && hS < 350) // 200 - 350
         {
             // teclado 3 rubber
             unlockLvl = 3;
-        }
-        else if (hS >= 350 && hS < 500)
+        } 
+        else if (hS >= 350 && hS < 500) // 350 - 500
         {
             // teclado 4 apple
             unlockLvl = 4;
         }
-        else if (hS >= 500 && hS < 750)
+        else if (hS >= 500 && hS < 750) // 500 - 750
         {
             // teclado 5 gaming
             unlockLvl = 5;
         }
-        else if (hS >= 750 && hS < 1250)
+        else if (hS >= 750 && hS < 1250) // 750 - 1250
         {
             // teclado 6 customs
             unlockLvl = 6;
         }
-        else if (hS >= 1250 && hS < 3000)
+        else if (hS >= 1250 && hS < 3000) // 1250 - 3000
         {
             // teclado 7 gaming pro
             unlockLvl = 7;
         }
-        else if (hS >= 1500)
+        else if (hS >= 3000)
         {
             // teclado 8 
             unlockLvl = 8;
