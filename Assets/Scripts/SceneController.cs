@@ -205,6 +205,11 @@ public class SceneController : MonoBehaviour {
             {
                 EraseData();
             }
+
+            if (pauseEsc)
+            {
+                Application.Quit();
+            }
         }
     }
     private void PauseUpdate() // Cuando se pausa el juego en el ESC

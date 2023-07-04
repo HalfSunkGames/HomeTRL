@@ -14,17 +14,17 @@ public class IntroManager : MonoBehaviour
     void Start()  // Start is called before the first frame update
     {
         intro.Play();             // Reproduce el video
-        Invoke("IntroSound", 1f); // delay del audio
-        Invoke("StartGame", 7f);  // Inicia el juego al terminar
-    }
-
-    private void IntroSound()
-    {
-        introAudio.Play();
+        Invoke("StartGame", 8.5f);  // Inicia el juego al terminar
     }
 
     private void StartGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            StartGame();
     }
 }
